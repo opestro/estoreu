@@ -39,30 +39,37 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import { ref, onMounted,computed } from 'vue';
-import product_data from '@/data/product-data';
+//import product_data from '@/data/product-data';
 
 let active_tab = ref('New')
 
 const tabs = ["New", "Featured", "Top Sellers"];
 // handleActiveTab
-const handleActiveTab = (tab: string) => {
+const handleActiveTab = (tab) => {
   active_tab.value = tab;
 };
+const props = defineProps( {
+  productsData: {
+    type: Object
+  },
+})
 
-const electronic_prd = product_data.filter(p => p.productType === 'electronics')
-const allProducts = electronic_prd;
+
+const electronic_prd = props?.productsData
+console.log( electronic_prd )
+const allProducts= electronic_prd
 
 const filteredProducts = computed(() => {
   if (active_tab.value === 'New') {
     return allProducts.slice(0,8);
-  } else if (active_tab.value === 'Featured') {
-    return allProducts.filter((product) => product.featured);
+  } else if (active_tab.value === 'featured') {
+    return allProducts.attributes.filter((product) => product.featured);
   } else if (active_tab.value === 'Top Sellers') {
-    return allProducts.slice().sort((a, b) => (b.sellCount ?? 0) - (a.sellCount ?? 0)).slice(0,8);
+    return allProducts.attributes
   } else {
-    return [];
+    return allProducts.attributes;
   }
 });
 onMounted(() => {})

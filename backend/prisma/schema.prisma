@@ -1,5 +1,5 @@
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// learn more about it in the docs  https //pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -11,25 +11,47 @@ datasource db {
 }
 
 model Tenants {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String @unique
-  users Users[] // One-to-many relationship with users
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String     @unique
+  users    Users[] // One-to-many relationship with users
+  products Products[] // One-to-many relationship with users
 }
 
 model Users {
-  id        String    @id @default(auto())  @map("_id") @db.ObjectId
-  tenant    Tenants   @relation(fields: [tenant_id], references: [id]) // Many-to-one relationship with tenant
-  tenant_id String   @db.ObjectId
-  email     String    @unique
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  tenant    Tenants @relation(fields:  [tenant_id], references:  [id]) // Many-to-one relationship with tenant
+  tenant_id String @db.ObjectId
+  email     String @unique
   name      String
-  products  Products[]
 }
 
 model Products {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  description String
-  price       String
-  user        Users   @relation(fields: [user_id], references: [id])
-  user_id     String @db.ObjectId
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  sku                   String
+  img                   String
+  title                 String
+  slug                  String
+  unit                  String
+  minImage              String[]
+  imageURLs             String[]
+  parent                String
+  children              String
+  price                 Int
+  discount              Int?
+  quantity              Int
+  brand                 String[]
+  category              String[]
+  status                String
+  productType           String
+  description           String
+  orderQuantity         Int?
+  additionalInformation String[]
+  featured              Boolean?
+  sellCount             Int
+  offerDate             String[]
+  tags                  String[]
+  videoId               String[]
+  sizes                 String[]
+  tenant Tenants @relation(fields:  [tenant_id], references:  [id])  // Many-to-one relationship with tenant
+  tenant_id             String   @db.ObjectId
 }
